@@ -1,6 +1,7 @@
 package co.com.jdti.app.controllers;
 
 import co.com.jdti.app.dtos.Trainer;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,9 @@ public class TrainerController {
 
     @GetMapping
     public ResponseEntity<List<Trainer>> findAll() {
+        if (trainers.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
         return ResponseEntity.ok(trainers);
     }
 }
