@@ -9,7 +9,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Trainer {
+public class Instructor {
 
     private String name;
     private String lastname;

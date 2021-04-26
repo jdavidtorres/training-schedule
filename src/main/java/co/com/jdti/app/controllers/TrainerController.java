@@ -1,14 +1,14 @@
 package co.com.jdti.app.controllers;
 
-import co.com.jdti.app.dtos.Trainer;
-import io.swagger.annotations.ApiOperation;
+import co.com.jdti.app.models.entities.InstructorEntity;
+import co.com.jdti.app.services.IInstructorServices;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin("*")
@@ -16,13 +16,15 @@ import java.util.List;
 @RequestMapping("/")
 public class TrainerController {
 
-    List<Trainer> trainers = new ArrayList<>();
+    @Autowired
+    private IInstructorServices iInstructorServices;
 
     @GetMapping
-    public ResponseEntity<List<Trainer>> findAll() {
-        if (trainers.isEmpty()) {
+    public ResponseEntity<List<InstructorEntity>> findAll() {
+        List<InstructorEntity> instructorEntityList = iInstructorServices.findAllInstructors();
+        if (instructorEntityList.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(trainers);
+        return ResponseEntity.ok(instructorEntityList);
     }
 }
