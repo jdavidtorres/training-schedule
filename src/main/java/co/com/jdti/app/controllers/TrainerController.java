@@ -5,6 +5,7 @@ import co.com.jdti.app.dtos.Instructor;
 import co.com.jdti.app.models.entities.EventEntity;
 import co.com.jdti.app.models.entities.InstructorEntity;
 import co.com.jdti.app.services.IInstructorServices;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,9 +22,10 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
-@CrossOrigin("*")
+@Slf4j
+@CrossOrigin({"*"})
 @RestController
-@RequestMapping("/")
+@RequestMapping("/instructor")
 public class TrainerController {
 
     @Autowired
@@ -38,6 +40,15 @@ public class TrainerController {
         return ResponseEntity.ok(instructorEntityList);
     }
 
+    @GetMapping("/instructor")
+    public ResponseEntity<InstructorEntity> findInstructorById(@RequestParam String idInstructor) {
+        Optional<InstructorEntity> instructorOptional = iInstructorServices.findInstructorById(idInstructor);
+        if (instructorOptional.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(instructorOptional.get());
+    }
+
     @PostMapping
     public ResponseEntity<InstructorEntity> save(@Valid @RequestBody Instructor instructor, BindingResult result) {
         if (result.hasErrors()) {
@@ -49,19 +60,24 @@ public class TrainerController {
 
     @PostMapping("/assign-event")
     public ResponseEntity<InstructorEntity> assignEvent(@RequestParam String idInstructor, @Valid @RequestBody Event event, BindingResult result) {
+        log.info("assignEvent(): Entramos al asignar evento");
         if (result.hasErrors()) {
+            log.error("Error");
             return ResponseEntity.badRequest().build();
         }
 
         Optional<InstructorEntity> instructor = iInstructorServices.findInstructorById(idInstructor);
         if (instructor.isEmpty()) {
+            log.warn("assignEvent(): Instructor no encontrado");
             return ResponseEntity.noContent().build();
         }
 
-        var newEvent = new EventEntity(event.getName(), event.getStartDate(), event.getEndDate(), event.getDescription());
+        var newEvent = new EventEntity(event.getTitle(), event.getStart(), event.getEnd(), event.getDescription());
 
         var instructorEvent = new InstructorEntity(instructor.get().getId(), instructor.get().getName(), instructor.get().getLastname(), instructor.get().getBirthday());
-        instructorEvent.getEvents().add(newEvent);
+        instructor.get().getEvents().add(newEvent);
+        instructorEvent.setEvents(instructor.get().getEvents());
+        log.info("assignEvent(): Sin errores");
         return ResponseEntity.status(HttpStatus.CREATED).body(iInstructorServices.assignEvent(instructorEvent));
     }
 }

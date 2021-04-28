@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -25,22 +27,26 @@ public class EventEntity {
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private String id;
 
-    private String name;
+    @NotEmpty
+    private String title;
 
+    @NotNull
     @Column(name = "start_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private Date start;
 
+    @NotNull
     @Column(name = "end_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private Date end;
 
+    @NotEmpty
     private String description;
 
-    public EventEntity(String name, Date startDate, Date endDate, String description) {
-        this.name = name;
-        this.startDate = startDate;
-        this.endDate = endDate;
+    public EventEntity(String title, Date start, Date end, String description) {
+        this.title = title;
+        this.start = start;
+        this.end = end;
         this.description = description;
     }
 }

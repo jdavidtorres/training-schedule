@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,12 +27,15 @@ public class InstructorEntity {
     @Column(name = "id", unique = true, nullable = false, updatable = false)
     private String id;
 
+    @NotEmpty
     @Column(nullable = false)
     private String name;
 
+    @NotEmpty
     @Column(nullable = false)
     private String lastname;
 
+    @NotNull
     @Column(nullable = false)
     private Date birthday;
 
