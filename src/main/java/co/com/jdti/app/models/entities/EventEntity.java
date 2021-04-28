@@ -28,6 +28,7 @@ public class EventEntity {
     private String id;
 
     @NotEmpty
+    @Column(nullable = false)
     private String title;
 
     @NotNull
@@ -40,7 +41,6 @@ public class EventEntity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date end;
 
-    @NotEmpty
     private String description;
 
     public EventEntity(String title, Date start, Date end, String description) {

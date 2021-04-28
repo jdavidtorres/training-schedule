@@ -80,4 +80,14 @@ public class TrainerController {
         log.info("assignEvent(): Sin errores");
         return ResponseEntity.status(HttpStatus.CREATED).body(iInstructorServices.assignEvent(instructorEvent));
     }
+
+    @GetMapping("/overall")
+    public ResponseEntity<Long> getOverall(@RequestParam String idInstructor) {
+        Optional<InstructorEntity> instructor = iInstructorServices.findInstructorById(idInstructor);
+        if (instructor.isEmpty()) {
+            log.warn("assignEvent(): Instructor no encontrado");
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(iInstructorServices.overallDuration(instructor.get()));
+    }
 }

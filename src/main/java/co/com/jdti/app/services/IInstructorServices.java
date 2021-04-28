@@ -14,4 +14,6 @@ public interface IInstructorServices {
     InstructorEntity assignEvent(InstructorEntity instructorWithEvent);
 
     Optional<InstructorEntity> findInstructorById(String idInstructor);
+
+    Long overallDuration(InstructorEntity instructor);
 }
