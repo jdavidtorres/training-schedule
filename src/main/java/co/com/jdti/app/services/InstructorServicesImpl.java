@@ -47,7 +47,6 @@ public class InstructorServicesImpl implements IInstructorServices {
 
     @Override
     public Long overallDuration(InstructorEntity instructor) {
-        var daysT = 0L;
         var minutesT = 0L;
         List<EventEntity> events = instructor.getEvents();
         for (EventEntity event : events) {
@@ -60,7 +59,6 @@ public class InstructorServicesImpl implements IInstructorServices {
                 minutesT += minutes;
             }
         }
-        daysT = TimeUnit.DAYS.convert(minutesT, TimeUnit.MINUTES);
-        return daysT;
+        return TimeUnit.DAYS.convert(minutesT, TimeUnit.MINUTES);
     }
 }
