@@ -2,10 +2,13 @@ package co.com.jdti.app.models.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -19,6 +22,7 @@ import java.util.List;
 @Entity
 @Table(name = "instructors")
 @Data
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class InstructorEntity {
 
     @Id
@@ -39,7 +43,7 @@ public class InstructorEntity {
     @Column(nullable = false)
     private Date birthday;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<EventEntity> events;
 
     public InstructorEntity() {

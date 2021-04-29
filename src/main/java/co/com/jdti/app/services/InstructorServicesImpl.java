@@ -40,11 +40,13 @@ public class InstructorServicesImpl implements IInstructorServices {
         return iInstructorRepository.save(instructorWithEvent);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<InstructorEntity> findInstructorById(String idInstructor) {
         return iInstructorRepository.findById(idInstructor);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Long overallDuration(InstructorEntity instructor) {
         var minutesT = 0L;
