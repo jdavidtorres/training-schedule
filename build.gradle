@@ -6,8 +6,16 @@ plugins {
 }
 
 group = 'co.com.jdti'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '11'
+
+jar {
+    enabled = true
+}
+
+bootJar {
+    archiveFileName = 'schedule-backend.jar'
+}
 
 configurations {
     compileOnly {
