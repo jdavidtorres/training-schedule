@@ -13,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class InstructorEntity {
     private String lastname;
 
     @NotNull
+    @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     private Date birthday;
 
