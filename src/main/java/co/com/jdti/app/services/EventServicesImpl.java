@@ -36,6 +36,6 @@ public class EventServicesImpl implements IEventServices {
     @Transactional
     @Override
     public void delete(String idEvent) {
-        iEventRepository.delete(iEventRepository.findById(idEvent).get());
+        iEventRepository.deleteById(idEvent);
     }
 }

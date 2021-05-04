@@ -44,11 +44,21 @@ public class EventController {
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(String idEvent) {
-        if (iEventServices.findEventById(idEvent).isEmpty()) {
+    public ResponseEntity<Void> delete(@RequestParam String idEvent, @RequestParam String idInstructor) {
+        Optional<EventEntity> objEvent = iEventServices.findEventById(idEvent);
+        if (objEvent.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        iEventServices.delete(idEvent);
+
+        Optional<InstructorEntity> objInstructor = iInstructorServices.findInstructorById(idInstructor);
+        if (objInstructor.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        var instructorEntity = objInstructor.get();
+        instructorEntity.removeEvent(objEvent.get());
+
+        iInstructorServices.save(instructorEntity);
         return ResponseEntity.ok().build();
     }
 
@@ -61,14 +71,18 @@ public class EventController {
 
         Optional<InstructorEntity> instructor = iInstructorServices.findInstructorById(idInstructor);
         if (instructor.isEmpty()) {
-            log.warn("editEvent(): Instructor no encontrado");
+            log.warn("editEvent(): Instructor not found");
             return ResponseEntity.noContent().build();
         }
 
         Optional<EventEntity> optionalEvent = iEventServices.findEventById(idEvent);
         if (optionalEvent.isEmpty()) {
-            log.warn("editEvent(): Evento no encontrado");
+            log.warn("editEvent(): Event not found");
             return ResponseEntity.noContent().build();
+        }
+
+        if (event.getEnd().before(event.getStart())) {
+            return ResponseEntity.badRequest().build();
         }
 
         var eventEntity = optionalEvent.get();
@@ -77,7 +91,6 @@ public class EventController {
         eventEntity.setStart(event.getStart());
         eventEntity.setEnd(event.getEnd());
 
-        log.info("editEvent(): Sin errores");
         return ResponseEntity.ok(iEventServices.edit(eventEntity));
     }
 }

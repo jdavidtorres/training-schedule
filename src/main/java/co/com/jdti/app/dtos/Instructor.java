@@ -12,6 +12,6 @@ import java.util.Date;
 public class Instructor {
 
     private String name;
-    private String lastname;
+    private String surname;
     private Date birthday;
 }

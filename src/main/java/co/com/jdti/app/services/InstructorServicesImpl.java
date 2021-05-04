@@ -3,7 +3,6 @@ package co.com.jdti.app.services;
 import co.com.jdti.app.models.entities.EventEntity;
 import co.com.jdti.app.models.entities.InstructorEntity;
 import co.com.jdti.app.models.repositories.IInstructorRepository;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
-@Slf4j
 @Service
 public class InstructorServicesImpl implements IInstructorServices {
 

@@ -2,8 +2,6 @@ package co.com.jdti.app.models.entities;
 
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,7 +22,6 @@ import java.util.List;
 @Entity
 @Table(name = "instructors")
 @Data
-@OnDelete(action = OnDeleteAction.CASCADE)
 public class InstructorEntity {
 
     @Id
@@ -39,7 +36,7 @@ public class InstructorEntity {
 
     @NotEmpty
     @Column(nullable = false)
-    private String lastname;
+    private String surname;
 
     @NotNull
     @Temporal(TemporalType.DATE)
@@ -55,7 +52,7 @@ public class InstructorEntity {
 
     public InstructorEntity(String name, String lastname, Date birthday) {
         this.name = name;
-        this.lastname = lastname;
+        this.surname = lastname;
         this.birthday = birthday;
         this.events = new ArrayList<>();
     }
@@ -63,8 +60,12 @@ public class InstructorEntity {
     public InstructorEntity(String id, String name, String lastname, Date birthday) {
         this.id = id;
         this.name = name;
-        this.lastname = lastname;
+        this.surname = lastname;
         this.birthday = birthday;
         this.events = new ArrayList<>();
+    }
+
+    public void removeEvent(EventEntity event) {
+        this.events.remove(event);
     }
 }

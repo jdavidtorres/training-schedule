@@ -54,30 +54,29 @@ public class TrainerController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        var instructorSave = new InstructorEntity(instructor.getName(), instructor.getLastname(), instructor.getBirthday());
+        var instructorSave = new InstructorEntity(instructor.getName(), instructor.getSurname(), instructor.getBirthday());
         return ResponseEntity.status(HttpStatus.CREATED).body(iInstructorServices.save(instructorSave));
     }
 
     @PostMapping("/assign-event")
     public ResponseEntity<InstructorEntity> assignEvent(@RequestParam String idInstructor, @Valid @RequestBody Event event, BindingResult result) {
-        log.info("assign-event(): Entramos al asignar evento");
         if (result.hasErrors()) {
-            log.error("Error");
+            log.error("Error: Bad request");
             return ResponseEntity.badRequest().build();
         }
 
         Optional<InstructorEntity> instructor = iInstructorServices.findInstructorById(idInstructor);
         if (instructor.isEmpty()) {
-            log.warn("assign-event(): Instructor no encontrado");
+            log.warn("assign-event(): Instructor not found");
             return ResponseEntity.noContent().build();
         }
 
         var newEvent = new EventEntity(event.getTitle(), event.getStart(), event.getEnd(), event.getDescription());
 
-        var instructorEvent = new InstructorEntity(instructor.get().getId(), instructor.get().getName(), instructor.get().getLastname(), instructor.get().getBirthday());
+        var instructorEvent = new InstructorEntity(instructor.get().getId(), instructor.get().getName(), instructor.get().getSurname(), instructor.get().getBirthday());
         instructor.get().getEvents().add(newEvent);
         instructorEvent.setEvents(instructor.get().getEvents());
-        log.info("assign-event(): Sin errores");
+        log.info("assign-event(): Without errors");
         return ResponseEntity.status(HttpStatus.CREATED).body(iInstructorServices.assignEvent(instructorEvent));
     }
 
@@ -85,7 +84,7 @@ public class TrainerController {
     public ResponseEntity<Long> getOverall(@RequestParam String idInstructor) {
         Optional<InstructorEntity> instructor = iInstructorServices.findInstructorById(idInstructor);
         if (instructor.isEmpty()) {
-            log.warn("overall(): Instructor no encontrado");
+            log.warn("overall(): Instructor not found");
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.status(HttpStatus.OK).body(iInstructorServices.overallDuration(instructor.get()));
