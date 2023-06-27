@@ -1,3 +1,6 @@
+[![Java CI with Gradle](https://github.com/jdavidtorres/training-schedule/actions/workflows/build.yml/badge.svg)](https://github.com/jdavidtorres/training-schedule/actions/workflows/build.yml)
+[![CodeQL](https://github.com/jdavidtorres/training-schedule/actions/workflows/codeql-analisys.yml/badge.svg)](https://github.com/jdavidtorres/training-schedule/actions/workflows/codeql-analisys.yml)
+
 # schedule-back
 
 1. This project needs Jre 11.
