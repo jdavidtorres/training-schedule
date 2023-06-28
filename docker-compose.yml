@@ -1,0 +1,20 @@
+services:
+  db:
+    container_name: schedule-database
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_ROOT_USER=root
+      - MYSQL_ROOT_PASSWORD=password
+      - MYSQL_DATABASE=schedule-database
+    ports:
+      - 3306:3306
+    volumes:
+      - local:/var/lib/mysql
+    networks:
+      - api-db
+networks:
+  api-db:
+    driver: bridge
+volumes:
+  local:

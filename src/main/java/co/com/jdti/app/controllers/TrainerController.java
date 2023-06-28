@@ -5,6 +5,7 @@ import co.com.jdti.app.dtos.Instructor;
 import co.com.jdti.app.models.entities.EventEntity;
 import co.com.jdti.app.models.entities.InstructorEntity;
 import co.com.jdti.app.services.IInstructorServices;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,7 +54,13 @@ public class TrainerController {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
-        var instructorSave = new InstructorEntity(instructor.getName(), instructor.getSurname(), instructor.getBirthday());
+
+        var instructorSave = InstructorEntity.builder()
+                .name(instructor.getName())
+                .surname(instructor.getSurname())
+                .birthday(instructor.getBirthday())
+                .build();
+
         return ResponseEntity.status(HttpStatus.CREATED).body(iInstructorServices.save(instructorSave));
     }
 
@@ -71,9 +77,20 @@ public class TrainerController {
             return ResponseEntity.noContent().build();
         }
 
-        var newEvent = new EventEntity(event.getTitle(), event.getStart(), event.getEnd(), event.getDescription());
+        var newEvent = EventEntity.builder()
+                .title(event.getTitle())
+                .start(event.getStart())
+                .end(event.getEnd())
+                .description(event.getDescription())
+                .build();
 
-        var instructorEvent = new InstructorEntity(instructor.get().getId(), instructor.get().getName(), instructor.get().getSurname(), instructor.get().getBirthday());
+        var instructorEvent = InstructorEntity.builder()
+                .id(instructor.get().getId())
+                .name(instructor.get().getName())
+                .surname(instructor.get().getSurname())
+                .birthday(instructor.get().getBirthday())
+                .build();
+
         instructor.get().getEvents().add(newEvent);
         instructorEvent.setEvents(instructor.get().getEvents());
         log.info("assign-event(): Without errors");
